@@ -367,7 +367,7 @@ for (i in 2:length(alpha_clean)){
   dev.off()
 }
 
-
+write.csv(alpha_clean[ , c("sampleid","log_modulo_skewness")], "output_data/Rarity.csv", row.names=FALSE)
 
 
 
