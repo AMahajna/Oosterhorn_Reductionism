@@ -158,7 +158,7 @@ Richness$observed = tse$observed
 Richness_corr <- round(cor(Richness[,2:5]), 1)
 testRes_rich = cor.mtest(Richness[,2:5],conf.level = 0.95)
 
-tiff("figures/corr_richness.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_richness.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(Richness_corr, hc.order = TRUE, type = "upper", lab = TRUE, 
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -194,7 +194,7 @@ Diversity$shannon = tse$shannon
 Diversity_corr <- round(cor(Diversity[,2:6]), 2)
 testRes_diversity = cor.mtest(Diversity[,2:6],conf.level = 0.95)
 
-tiff("figures/corr_diversity.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_diversity.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(Diversity_corr, hc.order = TRUE, type= "upper", lab = TRUE, 
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -226,7 +226,7 @@ Evenness$bulla = tse$bulla
 Evenness_corr <- round(cor(Evenness[,2:6]), 1)
 testRes_even = cor.mtest(Evenness[,2:6],conf.level = 0.95)
 
-tiff("figures/corr_evenness.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_evenness.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(Evenness_corr, hc.order = TRUE, type= "upper", lab = TRUE, 
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -263,7 +263,7 @@ Dominance$simpson_lambda = tse$simpson_lambda
 Dominance_corr <- round(cor(Dominance[,2:8]), 1)
 testRes_dominance = cor.mtest(Dominance[,2:8],conf.level = 0.95)
 
-tiff("figures/corr_dominance.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_dominance.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(Dominance_corr, hc.order = TRUE, type= "upper", lab = TRUE, 
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -306,7 +306,7 @@ Rarity$rarity_0.01 = rarity_0.01
 Rarity_corr <- round(cor(Rarity[,2:3]), 2)
 testRes_rarity = cor.mtest(Rarity[,2:3],conf.level = 0.95)
 
-tiff("figures/corr_rarity.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_rarity.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(Rarity_corr, hc.order = TRUE, type= "upper", lab = TRUE, 
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -333,7 +333,7 @@ alpha = cbind(alpha,Divergence[2])
 alpha_corr <- round(cor(alpha[,2:length(colnames(alpha))]), 1)
 testRes_alpha = cor.mtest(alpha[,2:length(colnames(alpha))],conf.level = 0.95)
 
-tiff("figures/corr_alpha_all.tiff", units="in", width=5, height=5, res=1000)
+png("figures/corr_alpha_all.png", units="in", width=5, height=5, res=1000)
 ggcorrplot(alpha_corr,hc.order = TRUE,lab = TRUE,lab_size = 2.5,
            outline.col = "white",
            ggtheme = ggplot2::theme_gray,
@@ -361,8 +361,8 @@ for (i in 2:length(alpha_clean)){
          x ="Lag", y = "Correlation")
   #ggplotly(plot)
   #Save plot 
-  cff_name = paste('figures/','ccf_', n[i],".tiff")
-  tiff(cff_name, units="in", width=5, height=5, res=1000)
+  cff_name = paste('figures/','ccf_', n[i],".png")
+  png(cff_name, units="in", width=5, height=5, res=1000)
   print(plot)
   dev.off()
 }
