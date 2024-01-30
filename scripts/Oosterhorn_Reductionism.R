@@ -342,15 +342,37 @@ ggcorrplot(alpha_corr,hc.order = TRUE,lab = TRUE,lab_size = 2.5,
 dev.off()
 alpha_clean = subset(alpha, select = -c(rarity_0.01, relative) )
 
+
+################################################################################
+alpha_diversity = merge(Richness, Diversity, by = "sampleid") 
+alpha_diversity = merge(alpha_diversity, Evenness, by = "sampleid") 
+alpha_diversity = merge(alpha_diversity, Dominance, by = "sampleid") 
+alpha_diversity = merge(alpha_diversity, Rarity, by = "sampleid") 
+alpha_diversity = merge(alpha_diversity, Divergence, by = "sampleid") 
+
+alpha_diversity_corr <- round(cor(alpha_diversity[2:25],use = 'pairwise.complete.obs', method = "pearson"), 2)
+#inf_testRes= cor.mtest(inf_lab[3:20],conf.level = 0.95)
+
+png("figures/alpha_diversity_cor.png", units="in", width=6, height=5, res=1000)
+alpha_diversity_corr_plot  = corrplot(alpha_diversity_corr, order ='hclust', addrec =13 , rect.col = "green",
+                         rect.lwd = 3 ,method = 'circle', addCoef.col = 'white',
+                         number.digits = 1,number.cex = 0.5,tl.pos ='lt', tl.srt=45, tl.cex =0.6)
+dev.off()
+
+#biplot to check underlying relations
+selected_alpha = c("sampleid","observed","shannon","simpson_evenness","camargo","bulla","absolute","core_abundance","evar","log_modulo_skewness","divergence")
+selected_alpha = alpha_diversity[ ,selected_alpha]
+ggpairs(selected_alpha[ ,2:11],lower = list(continuous = "smooth"))
+
 ################################################################################
 #cross correlation analysis 
 
-for (i in 2:length(alpha_clean)){ 
+for (i in 2:length(selected_alpha)){ 
   #Add name of the alpha diversity used in CCF
-  n=colnames(alpha_clean)
+  n=colnames(selected_alpha)
   text = paste("Cross Correlation Function for", n[i], "\n" , "and Removal Efficiency")
   #CCF
-  plot <- ggCcf(alpha_clean[, i],
+  plot <- ggCcf(selected_alpha[, i],
                 RE$RE,
                 type = "correlation",
                 na.action = na.contiguous) +
@@ -359,15 +381,14 @@ for (i in 2:length(alpha_clean)){
     scale_y_continuous(limits = c(-1, 1), breaks = seq(-1,1,0.2)) +
     labs(title=text,
          x ="Lag", y = "Correlation")
-  #ggplotly(plot)
-  #Save plot 
+
   cff_name = paste('figures/','ccf_', n[i],".png")
   png(cff_name, units="in", width=5, height=5, res=1000)
   print(plot)
   dev.off()
 }
 
-write.csv(alpha_clean[ , c("sampleid","log_modulo_skewness")], "output_data/Rarity.csv", row.names=FALSE)
+write.csv(selected_alpha[ , c("sampleid","log_modulo_skewness")], "output_data/Rarity.csv", row.names=FALSE)
 
 
 

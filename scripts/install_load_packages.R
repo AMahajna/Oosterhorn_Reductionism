@@ -87,4 +87,7 @@ if( !require("forecast") ) {
   library("forecast")
 }
 
-
+if( !require("GGally") ) {
+  install.packages("GGally")
+  library("GGally")
+}
